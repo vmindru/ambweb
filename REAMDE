@@ -1,0 +1,2 @@
+# autopopulate schema
+./manage.py inspectdb  laps --database kartsdb > live/models.py

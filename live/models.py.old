@@ -1,0 +1,8 @@
+from django.db import models
+
+
+class Laps(models.Model):
+    heat_id = models.IntegerField()
+    pass_id = models.IntegerField(primary_key=True)
+    transponder_id = models.IntegerField()
+    rtc_time = models.IntegerField()

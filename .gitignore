@@ -1,0 +1,4 @@
+venv
+**pyc
+**/*.pyc
+ambweb/meta_settings.py

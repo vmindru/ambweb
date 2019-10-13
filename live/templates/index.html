@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Live Time</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="3">
+  </head>
+  <body>
+    <table border=0>
+        <tr>
+            {% for transpoder_id in data.keys() %}
+            <th> {{ transpoder_id }} </th>
+            {% endfor %}
+        </tr>
+            {% for lap  in laps %}
+            <tr>
+                {% for transponder, value in data.items() %}
+                    {% if value|length > lap and value[lap] > 0 %}
+                        {% if value[lap] > 0  and value[lap] == data[transponder]|min %}
+                        <td>
+                            <span style="font-weight:bold">
+                            {{ "%.3f"|format(value[lap]) }}
+                            </span>
+                        </td>
+                        {% elif value[lap] > 0 %}
+                        <td> {{ "%.3f"|format(value[lap]) }} </td>
+                        {% endif %}
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+    </table>
+  </body>
+</html>
