@@ -10,4 +10,8 @@ def index(request):
     for key, values in data.items():
         data[key] = [val[1] for val in values if val[1] > 0]
     laps = range(0, heat.get_number_of_laps())
-    return render(request, 'index.html', {'data': data, 'laps': laps })
+    context = {
+            'data': data,
+            'laps': laps,
+            'heta_id': heat_id}
+    return render(request, 'index.html', context)

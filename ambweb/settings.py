@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = meta_settings.SECRET_KEY
 DEBUG = meta_settings.DEBUG
 
-ALLOWED_HOSTS = ['karts.mindruv.eu', '127.0.0.1']
+ALLOWED_HOSTS = meta_settings.ALLOWED_HOSTS
 INSTALLED_APPS = [
     'live.apps.LiveConfig',
     'django.contrib.admin',
@@ -31,7 +31,7 @@ ROOT_URLCONF = 'ambweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': ['/home/vmindru/proj/amb/amb_web/live/templates'],
+        'DIRS': meta_settings.DIRS,
         'APP_DIRS': True,
     },
     {
