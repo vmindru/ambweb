@@ -3,13 +3,20 @@
   <head>
     <title>Live Time</title>
     <meta charset="utf-8" />
+    {% if refresh %}
     <meta http-equiv="refresh" content="3">
+    {% endif %}
   </head>
   <body>
     <table border=0>
+        {% if refresh %}
+            <tr> Runing Heat: {{ heat_id }} </tr>
+        {% else %}
+            <tr> Heat: {{ heat_id }} </tr>
+        {% endif %}
         <tr>
             {% for transpoder_id in data.keys() %}
-            <th> {{ transpoder_id }} </th>
+            <th> {{ kart_dict[transpoder_id] }} </th>
             {% endfor %}
         </tr>
             {% for lap  in laps %}
