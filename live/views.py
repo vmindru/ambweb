@@ -4,23 +4,25 @@ from live.lib.race import get_last_heat
 from pprint import pprint
 
 def heat_id(request, heat_id):
-    data, laps, heat_id = get_heat(request, heat_id=heat_id)
+    data, laps, heat_id, karts_dict = get_heat(request, heat_id=heat_id)
     context = {
             'data': data,
             'laps': laps,
             'heat_id': heat_id,
-            'refresh': False
+            'refresh': False,
+            'kart_dict': karts_dict,
             }
     print(request.content_params)
     return render(request, 'index.html', context)
 
 def heat(request):
-    data, laps, heat_id = get_heat(request)
+    data, laps, heat_id, karts_dict = get_heat(request)
     context = {
             'data': data,
             'laps': laps,
             'heat_id': heat_id,
             'refresh': True,
+            'kart_dict': karts_dict,
             }
     return render(request, 'index.html', context)
 
@@ -34,7 +36,8 @@ def get_heat(request, heat_id=None):
     heat = get_amb_data(heat_id=heat_id)
     data = sort_heat(remove_rtc_time(transponder_to_kart_name(heat.dict)))
     laps = range(0, heat.get_number_of_laps())
-    return data, laps, heat_id
+    karts_dict = heat.kart_ids
+    return data, laps, heat_id, karts_dict
 
 
 def sort_heat(data):

@@ -45,3 +45,13 @@ class Laps(models.Model):
     class Meta:
         managed = False
         db_table = 'laps'
+
+
+class Karts(models.Model):
+    name = models.CharField(max_length=20, blank=True, null=True)
+    kart_number = models.PositiveIntegerField(primary_key=True)
+    transponder_id = models.PositiveIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'karts'

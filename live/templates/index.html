@@ -9,10 +9,14 @@
   </head>
   <body>
     <table border=0>
-        <tr> Running Heat: {{ heat_id }} </tr>
+        {% if refresh %}
+            <tr> Runing Heat: {{ heat_id }} </tr>
+        {% else %}
+            <tr> Heat: {{ heat_id }} </tr>
+        {% endif %}
         <tr>
             {% for transpoder_id in data.keys() %}
-            <th> {{ transpoder_id }} </th>
+            <th> {{ kart_dict[transpoder_id] }} </th>
             {% endfor %}
         </tr>
             {% for lap  in laps %}

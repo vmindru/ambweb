@@ -1,11 +1,13 @@
 from live.models import Laps
 from live.models import Heats
+from live.models import Karts
 
 
 class Heat():
     def __init__(self, heat_id):
         self.id = heat_id
         self.dict = {}
+        self.kart_ids = kart_ids(Karts.objects.values('kart_number','transponder_id'))
 
     def add_pass(self, transponder_id,  rtc_time):
         if transponder_id not in self.dict:
@@ -42,3 +44,19 @@ def get_transponder_laps(heat_id, transponder_id):
 
 def get_last_heat():
     return Heats.objects.last().heat_id
+
+def kart_ids(QuerySet):
+    karts = {}
+    for entry in QuerySet:
+        karts[entry['transponder_id']] = entry['kart_number']
+    return karts
+
+def get_kart_ids(transponder_id, transponder_kart_dict):
+    if transponder_id in transponder_kart_dict():
+        return transponder_kart_dict[transponder_id]
+    else:
+        return transponder_id
+
+
+
+
