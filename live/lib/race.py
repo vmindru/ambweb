@@ -12,7 +12,7 @@ class Heat():
             self.dict[transponder_id] = [(rtc_time, 0)]
         else:
             prev_time = self.dict[transponder_id][-1][0]
-            lap_time = ( rtc_time - prev_time ) / 1000000
+            lap_time = (rtc_time - prev_time) / 1000000
             self.dict[transponder_id].append((rtc_time, lap_time))
 
     def get_number_of_laps(self):
@@ -25,7 +25,6 @@ def get_amb_data(heat_id):
         for rtc_time in get_transponder_laps(heat_id, transponder_id):
             heat.add_pass(transponder_id, rtc_time)
     return heat
-
 
 
 def get_heat_transponders(heat_id):
@@ -42,4 +41,4 @@ def get_transponder_laps(heat_id, transponder_id):
 
 
 def get_last_heat():
-    return Heats.objects.filter(heat_finished=1).last().heat_id
+    return Heats.objects.last().heat_id
