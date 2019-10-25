@@ -41,7 +41,7 @@ def get_heat(request, heat_id=None):
 
 
 def sort_heat(data):
-    return dict(sorted(data.items(), key=lambda e: min(e[1])))
+    return dict(sorted(data.items(), key=lambda e: min(e[1]) if len(e[1]) > 0 else 0))
 
 def remove_rtc_time(data):
     for key, values in data.items():
