@@ -1,5 +1,0 @@
-# autopopulate schema
-./manage.py inspectdb  laps --database kartsdb > live/models.py
-
-# django deps formysqlclient
-yum install MariaDB-shared MariaDB-devel
