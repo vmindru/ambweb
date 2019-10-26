@@ -31,13 +31,15 @@ class Heat():
 
 
 def get_race_data(heat_id):
-    select_query = "select t2.transponder_id,laps_count,((t2.rtc_time - t3.rtc_time) / 1000000 ) as lap_time  from\
+    select_query = "select karts.kart_number,t5.laps_count,t5.lap_time from ( select t2.transponder_id,\
+laps_count,((t2.rtc_time - t3.rtc_time) / 1000000 ) as lap_time  from\
 ( select transponder_id , rtc_time from laps as t1 where rtc_time=(select  max(rtc_time) from laps where \
 transponder_id=t1.transponder_id and heat_id={heat_id} ) ) as t2  join ( select transponder_id , rtc_time from laps as \
 t1 where rtc_time=(select rtc_time from laps where transponder_id=t1.transponder_id and heat_id={heat_id} order by \
 pass_id desc  limit 1 offset 1  )) as t3 join ( select transponder_id,count(*) as laps_count from laps where \
 heat_id={heat_id}  group  by transponder_id  ) as t4  on t2.transponder_id=t4.transponder_id and \
-t4.transponder_id=t3.transponder_id  order by t4.laps_count desc".format(heat_id=heat_id)
+t4.transponder_id=t3.transponder_id  order by t4.laps_count desc) as t5 join karts on t5.transponder_id = \
+karts.transponder_id".format(heat_id=heat_id)
     with connections['kartsdb'].cursor() as cursor:
         cursor.execute(select_query)
         res = cursor.fetchall()
