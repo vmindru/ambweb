@@ -9,4 +9,5 @@ Race /race
 # django deps formysqlclient
 yum install MariaDB-shared MariaDB-devel
 
-
+# demo
+![alt tag](https://raw.githubusercontent.com/vmindru/ambweb/master/templates/demo.gif)
