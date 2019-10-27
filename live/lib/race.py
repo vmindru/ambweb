@@ -11,6 +11,23 @@ def get_amb_data(heat_id):
             heat.add_pass(transponder_id, rtc_time)
     return heat
 
+def get_best_lap(heat_id):
+    heat = Heat(heat_id)
+    for transponder_id in get_heat_transponders(heat_id):
+        for rtc_time in get_transponder_laps(heat_id, transponder_id):
+            heat.add_pass(transponder_id, rtc_time)
+    heat_dict = heat.dict
+    for key,value in heat_dict.items():
+        if len(value) > 1:
+            lap_times = [ item[1] for item in value]
+            best_lap_time =  min(lap_times[1:])
+            best_lap = lap_times.index(best_lap_time)+1
+            heat_dict[key] = (best_lap_time, best_lap)
+        else:
+            heat_dict[key] = (0,0)
+    print(heat_dict)
+    return heat_dict
+
 
 class Heat():
     def __init__(self, heat_id):
@@ -32,7 +49,7 @@ class Heat():
 
 def get_race_data(heat_id):
     select_query = "select karts.kart_number,t5.laps_count,t5.lap_time, sec_to_time((t5.time_raced / 1000000)) as \
-time_raced,(t5.time_raced) as seconds_raced from ( select t2.transponder_id,\
+time_raced,(t5.time_raced) as seconds_raced, karts.transponder_id from ( select t2.transponder_id,\
 laps_count,((t2.rtc_time - t3.rtc_time) / 1000000 ) as lap_time, \
 ( t2.rtc_time - ( select rtc_time_start from heats where heat_id={heat_id} )) as time_raced from\
 ( select transponder_id , rtc_time from laps as t1 where rtc_time=(select  max(rtc_time) from laps where \
@@ -43,6 +60,7 @@ heat_id={heat_id}  group  by transponder_id  ) as t4  on t2.transponder_id=t4.tr
 t4.transponder_id=t3.transponder_id) as t5 join karts on t5.transponder_id = \
 karts.transponder_id order by t5.laps_count desc, t5.time_raced".format(heat_id=heat_id)
     print(select_query)
+    get_best_lap(heat_id)
     with connections['kartsdb'].cursor() as cursor:
         cursor.execute(select_query)
         res = cursor.fetchall()

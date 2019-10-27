@@ -21,6 +21,8 @@
           <th width=90 style="text-align:center">Lap Time</th>
           <th width=90 style="text-align:center">Time</th>
           <th width=90 style="text-align:center">Diff</th>
+          <th width=90 style="text-align:center">Best Lap Time</th>
+          <th width=90 style="text-align:center">Best Lap</th>
       </tr>
       {% for result in data %}
       <tr>
@@ -45,6 +47,8 @@
               {% endif %}
           </td>
           {% endif %}
+          <td width=90 style="text-align:center">{{ best_lap[result[5]][0] }}</td>
+          <td width=90 style="text-align:center">{{ best_lap[result[5]][1] }}</td>
       </tr>
       {% endfor %}
   </table>

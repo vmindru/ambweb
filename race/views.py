@@ -1,27 +1,28 @@
 from django.shortcuts import render
 from live.lib.race import get_race_data
+from live.lib.race import get_best_lap
 from live.lib.race import get_last_heat
 
 
 def heat_by_id(request, heat_id):
-    data = get_heat(request, heat_id=heat_id)
-    context = {
-            'heat_id': heat_id,
-            'refresh': False,
-            'data': data,
-            }
-    print(request.content_params)
-    return render(request, 'race.html', context)
-
-
-def heat(request):
-    data, heat_id = get_heat(request)
+    data, best_lap, heat_id = get_heat(request, heat_id=heat_id)
     context = {
             'heat_id': heat_id,
             'refresh': True,
             'data': data,
+            'best_lap': best_lap
             }
-    print("RACE")
+    return render(request, 'race.html', context)
+
+
+def heat(request):
+    data, best_lap, heat_id = get_heat(request)
+    context = {
+            'heat_id': heat_id,
+            'refresh': True,
+            'data': data,
+            'best_lap': best_lap
+            }
     return render(request, 'race.html', context)
 
 
@@ -30,8 +31,8 @@ def get_heat(request, heat_id=None):
         heat_id = get_last_heat()
     print(heat_id)
     data = get_race_data(heat_id)
-    print(data)
-    return data, heat_id
+    best_lap = get_best_lap(heat_id)
+    return data, best_lap, heat_id
 
 
 def sort_heat(data):
