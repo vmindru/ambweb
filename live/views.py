@@ -13,7 +13,7 @@ def heat_id(request, heat_id):
             'kart_dict': karts_dict,
             }
     print(request.content_params)
-    return render(request, 'index.html', context)
+    return render(request, 'live.html', context)
 
 def heat(request):
     data, laps, heat_id, karts_dict = get_heat(request)
@@ -24,7 +24,7 @@ def heat(request):
             'refresh': True,
             'kart_dict': karts_dict,
             }
-    return render(request, 'index.html', context)
+    return render(request, 'live.html', context)
 
 
 def get_heat(request, heat_id=None):

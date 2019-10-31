@@ -1,0 +1,43 @@
+{% block javascript %}
+<script type="text/javascript" src="/static/js/jq.js"></script>
+<link rel="stylesheet" type="text/css" href=/static/css/race_table.css>
+  <script>
+      function mtd(options, value) {
+         var td='<td '+ options.join(' ')+'>' + value + '</td>'
+         console.log(td)
+         return td
+      };
+      $.ajax({
+        url: '/race/json/',
+        dataType: 'json',
+            success: function(jdata){
+            var tr = $('<tr></tr>')
+            var td = $('<td></td>')
+            var th = $('<th></th>')
+            var table = $('<table></table>')
+            var thead = $('<thead></thead>')
+            var tbody = $('<tbody></tbody>')
+            var header_row = tr.clone()
+            $.each(jdata.data_header, function(index, value){
+                header_row.append(th.clone().append(value))
+            });
+            thead.append(header_row)
+            table.append(thead)
+            table.append(tbody)
+            $.each(jdata.data, function(index, raw) {
+                var row = tr.clone() // create row
+                $.each(raw, function(index, value){
+                  this_td = td.clone()
+                  this_td.append(value)
+                  row.append(this_td)
+                });
+            tbody.append(row)
+            });
+            table.append(tbody)
+            $('#table').append(table)
+        }
+      });
+  </script>
+{% endblock %}
+<div id=table>
+</div>

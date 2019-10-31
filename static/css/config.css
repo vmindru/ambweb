@@ -1,0 +1,74 @@
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+  background-color: #98cfea;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+}
+
+.stop-button-accordion {
+  background-color: #ffff;
+  text-align: center
+}
+
+.active, .stop-button-accordion:hover {
+  background-color: #ff6161;
+}
+
+.start-button-accordion {
+  background-color: #ffff;
+  text-align: center
+}
+
+.active, .start-button-accordion:hover {
+  background-color: #3efb3f;
+}
+
+
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+  background-color: #7dacc3;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+}
+
+
+div.blueTable {
+  border: 0px;
+  background-color: #7dacc3;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  padding: 0px
+}
+.divTable.blueTable .divTableCell, .divTable.blueTable .divTableHead {
+  border: 0px
+}
+.divTable.blueTable .divTableBody .divTableCell {
+  font-size: 13px;
+  width: 40%
+}
+.divTable.blueTable .divTableRow:nth-child(even) {
+  background: #D0E4F5;
+}
+
+.divTable { display: table; }
+.divTableRow { display: table-row; }
+.divTableCell, .divTableHead { display: table-cell;}
+.divTableBody { display: table-row-group;}
+
+
+
+
+

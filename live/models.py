@@ -8,6 +8,14 @@
 from django.db import models
 
 
+class Settings(models.Model):
+    setting = models.CharField(max_length=30, primary_key=True)
+    value = models.CharField(max_length=120, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'settings'
+
 class Heats(models.Model):
     heat_id = models.AutoField(primary_key=True)
     heat_finished = models.IntegerField(blank=True, null=True)
@@ -53,5 +61,5 @@ class Karts(models.Model):
     transponder_id = models.PositiveIntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'karts'

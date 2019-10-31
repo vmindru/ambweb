@@ -7,13 +7,14 @@ DEBUG = meta_settings.DEBUG
 
 ALLOWED_HOSTS = meta_settings.ALLOWED_HOSTS
 INSTALLED_APPS = [
-    'live.apps.LiveConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'live',
+    'race',
 ]
 
 MIDDLEWARE = [
@@ -30,14 +31,9 @@ ROOT_URLCONF = 'ambweb.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': meta_settings.DIRS,
-        'APP_DIRS': True,
-    },
-    {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': False,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -46,6 +42,11 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
+    },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [os.path.join(BASE_DIR, 'jinja2_templates')],
+        'APP_DIRS': False,
     },
 ]
 
@@ -119,3 +120,9 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+

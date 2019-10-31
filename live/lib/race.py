@@ -11,21 +11,21 @@ def get_amb_data(heat_id):
             heat.add_pass(transponder_id, rtc_time)
     return heat
 
+
 def get_best_lap(heat_id):
     heat = Heat(heat_id)
     for transponder_id in get_heat_transponders(heat_id):
         for rtc_time in get_transponder_laps(heat_id, transponder_id):
             heat.add_pass(transponder_id, rtc_time)
     heat_dict = heat.dict
-    for key,value in heat_dict.items():
+    for key, value in heat_dict.items():
         if len(value) > 1:
-            lap_times = [ item[1] for item in value]
-            best_lap_time =  min(lap_times[1:])
+            lap_times = [item[1] for item in value]
+            best_lap_time = min(lap_times[1:])
             best_lap = lap_times.index(best_lap_time)+1
             heat_dict[key] = (best_lap_time, best_lap)
         else:
-            heat_dict[key] = (0,0)
-    print(heat_dict)
+            heat_dict[key] = (0, 0)
     return heat_dict
 
 
@@ -59,7 +59,6 @@ pass_id desc  limit 1 offset 1  )) as t3 join ( select transponder_id,count(*) a
 heat_id={heat_id}  group  by transponder_id  ) as t4  on t2.transponder_id=t4.transponder_id and \
 t4.transponder_id=t3.transponder_id) as t5 join karts on t5.transponder_id = \
 karts.transponder_id order by t5.laps_count desc, t5.time_raced".format(heat_id=heat_id)
-    print(select_query)
     get_best_lap(heat_id)
     with connections['kartsdb'].cursor() as cursor:
         cursor.execute(select_query)
