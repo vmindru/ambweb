@@ -83,6 +83,7 @@ def heat_json(request):
                         gap = round((prev_diff + gap),3)
                         print(diff)
                     else:
+                        gap = prev_diff
                         print("String: {}".format(diff))
                         break
             else:
