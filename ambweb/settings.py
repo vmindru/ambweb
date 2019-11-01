@@ -1,7 +1,7 @@
 import os
 import ambweb.meta_settings as meta_settings
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = meta_settings.BASE_DIR
 SECRET_KEY = meta_settings.SECRET_KEY
 DEBUG = meta_settings.DEBUG
 
@@ -119,10 +119,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
-
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_media/')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static/"),
 ]
-
-
