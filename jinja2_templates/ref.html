@@ -1,43 +1,15 @@
 {% block javascript %}
 <script type="text/javascript" src="/static/js/jq.js"></script>
+<script type="text/javascript" src="/static/js/dt/datatables.min.js"></script>
+<script type="text/javascript" src="/static/js/dt/dataTables.colReorder.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/race.js"></script>
 <link rel="stylesheet" type="text/css" href=/static/css/race_table.css>
-  <script>
-      function mtd(options, value) {
-         var td='<td '+ options.join(' ')+'>' + value + '</td>'
-         console.log(td)
-         return td
-      };
-      $.ajax({
-        url: '/race/json/',
-        dataType: 'json',
-            success: function(jdata){
-            var tr = $('<tr></tr>')
-            var td = $('<td></td>')
-            var th = $('<th></th>')
-            var table = $('<table></table>')
-            var thead = $('<thead></thead>')
-            var tbody = $('<tbody></tbody>')
-            var header_row = tr.clone()
-            $.each(jdata.data_header, function(index, value){
-                header_row.append(th.clone().append(value))
-            });
-            thead.append(header_row)
-            table.append(thead)
-            table.append(tbody)
-            $.each(jdata.data, function(index, raw) {
-                var row = tr.clone() // create row
-                $.each(raw, function(index, value){
-                  this_td = td.clone()
-                  this_td.append(value)
-                  row.append(this_td)
-                });
-            tbody.append(row)
-            });
-            table.append(tbody)
-            $('#table').append(table)
-        }
-      });
-  </script>
+<link rel="stylesheet" type="text/css" href=/static/css/dt/datatables.min.css>
+<link rel="stylesheet" type="text/css" href=/static/css/dt/colReorder.dataTables.min.css>
+<link rel="stylesheet" type="text/css" href=/static/css/dt/jquery.dataTables.min.css>
+<link rel="stylesheet" type="text/css" href=https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css>
 {% endblock %}
 <div id=table>
+<table id="live"><thead><tr><th>Position</th><th>Kart</th><th>Laps</th><th>Lap Time</th><th>Raced Time</th><th>Diff</th><th>Gap</th><th>Best Lap Time</th><th>Best Lap</th></tr></thead></table>
 </div>

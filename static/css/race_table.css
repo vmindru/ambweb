@@ -3,14 +3,18 @@ table {
     text-align: center
 }
 
-th {
-  height: 50px;
+thead {
+   background-color: #e6a8a8
 }
 
-tr {
-    border: 1;
+.even {
+   background-color: #f7ffe6 !important
 }
 
-td {
-    border: 1;
+.odd {
+   background-color: #f7ffe6 !important
+}
+
+.selected {
+   background-color: #ccc !important
 }
