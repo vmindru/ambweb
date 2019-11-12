@@ -24,11 +24,13 @@ def heat_by_id(request, heat_id):
 
 def heat(request):
     data, best_lap, heat_id = get_heat(request)
+    data_header = ['Position','Kart','Laps', 'Lap Time', 'Raced Time', 'Diff', 'Gap', 'Best Lap Time', 'Best Lap']
     context = {
             'heat_id': heat_id,
             'refresh': True,
             'data': data,
-            'best_lap': best_lap
+            'best_lap': best_lap,
+            'data_header': data_header
             }
     return render(request, 'race.html', context)
 
@@ -101,10 +103,7 @@ def heat_json(request):
 
         data[index] = value + best_lap_time_data
     context = {
-            'heat_id': heat_id,
-            'refresh': True,
             'data': data,
-            'data_header': data_header,
             }
     d = context
     data = json.dumps(d, indent=4, cls=DjangoJSONEncoder)
