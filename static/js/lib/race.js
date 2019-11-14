@@ -1,28 +1,36 @@
 $(document).ready(function() {
-
-var db =  $('#live').DataTable( {
-        "ajax": '/race/json/',
+var race =  $('#race').DataTable( {
+        "ajax": {"url": '/race/json/'},
         "paging":   false,
         "info": false,
         "searching": false,
         "ordering": false,
         "rowId": 1,
         "select": true,
-        "dom": 'Bfrtip',
         "emptyTable": "No race in progress",
-/*        "columns": [
-            {"title": "Position"},
-            {"title": "Number"},
-            {"title": "Laps"},
-            {"title": "Lap Time"},
-            {"title": "Raced Time"},
-            {"title": "Diff"},
-            {"title": "Gap"},
-            {"title": "Best Lap Time"},
-            {"title": "Best Lap"},]
-*/
+        "messageBottom": "TEST",
+        "columns": [
+          {"title": "Position"},
+          {"title": "Number"},
+          {"title": "Laps"},
+          {"title": "Lap Time"},
+          {"title": "Raced Time"},
+          {"title": "Diff"},
+          {"title": "Gap"},
+          {"title": "Best Lap Time"},
+          {"title": "Best Lap"},],
+        "drawCallback": function(settings) {
+//            $('#header').text(settings.json.heat_id)
+            json_data = settings.json
+            if ( json_data){
+            $('#heat_id').text("Race: "+json_data.heat_id)
+            $('#race_time').text("Race Time: "+json_data.heat_duration)
+            $('#race_start').text("Race Start: "+json_data.heat_start)
+            $('#race_end').text("Race End: "+json_data.heat_end)
+            }
+         },
     } );
-setInterval (db.ajax.reload, 2000);
+    setInterval (race.ajax.reload, 2000)
 } );
 
 
