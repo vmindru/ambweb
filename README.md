@@ -9,5 +9,23 @@ Race /race
 # django deps formysqlclient
 yum install MariaDB-shared MariaDB-devel
 
+# install deps
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.ini
+
+# if above throws an error aout mysql
+yum provides mysql_config
+yum install ${PCKG} 
+
+
 # demo
 ![alt tag](https://raw.githubusercontent.com/vmindru/ambweb/master/templates/demo.gif)
+
+
+# related
+
+https://github.com/vmindru/ambp3client
+
+https://github.com/br0ziliy/amb-docker

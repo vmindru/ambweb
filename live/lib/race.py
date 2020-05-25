@@ -48,17 +48,51 @@ class Heat():
 
 
 def get_race_data(heat_id):
-    select_query = "select karts.kart_number,t5.laps_count,t5.lap_time, sec_to_time((t5.time_raced / 1000000)) as \
-time_raced,(t5.time_raced) as seconds_raced, karts.transponder_id from ( select t2.transponder_id,\
-laps_count,((t2.rtc_time - t3.rtc_time) / 1000000 ) as lap_time, \
-( t2.rtc_time - ( select rtc_time_start from heats where heat_id={heat_id} )) as time_raced from\
-( select transponder_id , rtc_time from laps as t1 where rtc_time=(select  max(rtc_time) from laps where \
-transponder_id=t1.transponder_id and heat_id={heat_id} ) ) as t2  join ( select transponder_id , rtc_time from laps as \
-t1 where rtc_time=(select rtc_time from laps where transponder_id=t1.transponder_id and heat_id={heat_id} order by \
-pass_id desc  limit 1 offset 1  )) as t3 join ( select transponder_id,count(*) as laps_count from laps where \
-heat_id={heat_id}  group  by transponder_id  ) as t4  on t2.transponder_id=t4.transponder_id and \
-t4.transponder_id=t3.transponder_id) as t5 join karts on t5.transponder_id = \
-karts.transponder_id order by t5.laps_count desc, t5.time_raced".format(heat_id=heat_id)
+    select_query = """
+SELECT ifnull(karts.kart_number, t5.transponder_id),
+       t5.laps_count,
+       t5.lap_time,
+       sec_to_time((t5.time_raced / 1000000)) AS time_raced,
+       (t5.time_raced) AS seconds_raced,
+       ifnull(karts.transponder_id, t5.transponder_id)
+FROM
+  (SELECT t2.transponder_id,
+          laps_count,
+          ((t2.rtc_time - t3.rtc_time) / 1000000) AS lap_time,
+          (t2.rtc_time -
+             (SELECT rtc_time_start
+              FROM heats
+              WHERE heat_id={0} )) AS time_raced
+   FROM
+     (SELECT transponder_id,
+             rtc_time
+      FROM laps AS t1
+      WHERE rtc_time=
+          (SELECT max(rtc_time)
+           FROM laps
+           WHERE transponder_id=t1.transponder_id
+             AND heat_id={0} ) ) AS t2
+   JOIN
+     (SELECT transponder_id,
+             rtc_time
+      FROM laps AS t1
+      WHERE rtc_time=
+          (SELECT rtc_time
+           FROM laps
+           WHERE transponder_id=t1.transponder_id
+             AND heat_id={0}
+           ORDER BY pass_id DESC
+           LIMIT 1
+           OFFSET 1)) AS t3
+   JOIN
+     (SELECT transponder_id,
+             count(*) AS laps_count
+      FROM laps
+      WHERE heat_id={0} GROUP  BY transponder_id ) AS t4 ON t2.transponder_id=t4.transponder_id
+   AND t4.transponder_id=t3.transponder_id) AS t5
+LEFT JOIN karts ON t5.transponder_id = karts.transponder_id
+ORDER BY t5.laps_count DESC, t5.time_raced""".format(heat_id)
+
     get_best_lap(heat_id)
     with connections['kartsdb'].cursor() as cursor:
         cursor.execute(select_query)

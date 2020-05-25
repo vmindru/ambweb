@@ -92,16 +92,33 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+    'require_debug_false': {
+        '()': 'django.utils.log.RequireDebugFalse',
+    },
+    'require_debug_true': {
+        '()': 'django.utils.log.RequireDebugTrue',
+    },
+    },
     'handlers': {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': meta_settings.LOGFILE,
         },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+        'console_on_not_debug': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_false'],
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['file','console_on_not_debug'],
             'level': 'DEBUG',
             'propagate': True,
         },
