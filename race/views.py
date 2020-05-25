@@ -12,4 +12,4 @@ def heat_refresh(request, heat_id=None):
             'heat_id': heat_id,
             'ajax_url': ajax_url,
             }
-    return render(request, 'ref.html', context)
+    return render(request, 'race.html', context)

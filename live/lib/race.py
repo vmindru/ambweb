@@ -129,3 +129,15 @@ def get_kart_ids(transponder_id, transponder_kart_dict):
         return transponder_kart_dict[transponder_id]
     else:
         return transponder_id
+
+
+def get_heat(heat_id):
+    heat_finished = Heats(heat_id=heat_id).heat_finished
+    rtc_time_start = Heats.objects.get(heat_id=heat_id).rtc_time_start
+    rtc_time_end = Heats.objects.get(heat_id=heat_id).rtc_time_end
+    print(rtc_time_start, rtc_time_end)
+    return heat_finished, rtc_time_start, rtc_time_end
+
+
+
+

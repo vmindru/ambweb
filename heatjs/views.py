@@ -6,15 +6,23 @@ import json
 from live.lib.race import get_race_data
 from live.lib.race import get_best_lap
 from live.lib.race import get_last_heat
+from live.lib.race import get_heat
 
 
 def heat_json(request, heat_id=None):
     def get_index(val):
         return data_header.index(val)
-    data, best_lap, heat_id = get_heat(request, heat_id=heat_id)
+    data, best_lap, heat_id, heat_finished, rtc_time_start, rtc_time_end = get_heat_data(request, heat_id=heat_id)
     heat_duration = "10 Minutes"
-    heat_start = "UPDATE ME START"
-    heat_end = "UPDATE ME END"
+    try:
+        heat_start = dt.fromtimestamp(int(rtc_time_start) / 1000000).strftime('%d.%m.%Y  %H:%M')
+    except TypeError:
+        heat_start = ''
+    try:
+        heat_end = dt.fromtimestamp(int(rtc_time_end) / 1000000).strftime('%d.%m.%Y  %H:%M')
+    except TypeError:
+        heat_end = ''
+
     """ we need to replace transponder from last colum from SQL query dataset
     with values from best_lap before sneding to render"""
     data = list(data)
@@ -86,9 +94,10 @@ def heat_json(request, heat_id=None):
     return HttpResponse(data)
 
 
-def get_heat(request, heat_id=None):
+def get_heat_data(request, heat_id=None):
     if heat_id is None:
         heat_id = get_last_heat()
+    heat_finished, rtc_time_start, rtc_time_end = get_heat(heat_id)
     data = get_race_data(heat_id)
     best_lap = get_best_lap(heat_id)
-    return data, best_lap, heat_id
+    return data, best_lap, heat_id, heat_finished, rtc_time_start, rtc_time_end
