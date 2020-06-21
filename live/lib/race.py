@@ -22,7 +22,7 @@ def get_best_lap(heat_id):
         if len(value) > 1:
             lap_times = [item[1] for item in value]
             best_lap_time = min(lap_times[1:])
-            best_lap = lap_times.index(best_lap_time)+1
+            best_lap = lap_times.index(best_lap_time)
             heat_dict[key] = (best_lap_time, best_lap)
         else:
             heat_dict[key] = (0, 0)
@@ -86,7 +86,7 @@ FROM
            OFFSET 1)) AS t3
    JOIN
      (SELECT transponder_id,
-             count(*) AS laps_count
+             count(*) -1 AS laps_count
       FROM laps
       WHERE heat_id={0} GROUP  BY transponder_id ) AS t4 ON t2.transponder_id=t4.transponder_id
    AND t4.transponder_id=t3.transponder_id) AS t5
@@ -137,7 +137,3 @@ def get_heat(heat_id):
     rtc_time_end = Heats.objects.get(heat_id=heat_id).rtc_time_end
     print(rtc_time_start, rtc_time_end)
     return heat_finished, rtc_time_start, rtc_time_end
-
-
-
-

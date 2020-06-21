@@ -13,7 +13,7 @@ def heat_json(request, heat_id=None):
     def get_index(val):
         return data_header.index(val)
     data, best_lap, heat_id, heat_finished, rtc_time_start, rtc_time_end = get_heat_data(request, heat_id=heat_id)
-    heat_duration = "10 Minutes"
+    heat_duration = "TBF heat_duration"
     try:
         heat_start = dt.fromtimestamp(int(rtc_time_start) / 1000000).strftime('%d.%m.%Y  %H:%M')
     except TypeError:
