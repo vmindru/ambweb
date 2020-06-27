@@ -1,43 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Live Time</title>
-    <meta charset="utf-8" />
-    {% if refresh %}
-    <meta http-equiv="refresh" content="3">
-    {% endif %}
-  </head>
-  <body>
-    <table border=0>
-        {% if refresh %}
-            <tr> Runing Heat: {{ heat_id }} </tr>
-        {% else %}
-            <tr> Heat: {{ heat_id }} </tr>
-        {% endif %}
-        <tr>
-            {% for transpoder_id in data.keys() %}
-            <th> {{ kart_dict[transpoder_id] }} </th>
-            {% endfor %}
-        </tr>
-            {% for lap  in laps %}
-            <tr>
-                {% for transponder, value in data.items() %}
-                    {% if value|length > lap and value[lap] > 0 %}
-                        {% if value[lap] > 0  and value[lap] == data[transponder]|min %}
-                        <td>
-                            <span style="font-weight:bold">
-                            {{ "%.3f"|format(value[lap]) }}
-                            </span>
-                        </td>
-                        {% elif value[lap] > 0 %}
-                        <td> {{ "%.3f"|format(value[lap]) }} </td>
-                        {% endif %}
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
+{% block javascript %}
+<input type="hidden" id="AjaxJsonUrl" name="variable" value="{{ ajax_url }}">
+<script type="text/javascript" src="/static/js/jq.js"></script>
+<script type="text/javascript" src="/static/js/dt/datatables.min.js"></script>
+<script type="text/javascript" src="/static/js/dt/dataTables.colReorder.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/live.js"></script>
+<link rel="stylesheet" type="text/css" href=/static/css/race_table.css>
+<link rel="stylesheet" type="text/css" href=/static/css/dt/datatables.min.css>
+<link rel="stylesheet" type="text/css" href=/static/css/dt/colReorder.dataTables.min.css>
+<link rel="stylesheet" type="text/css" href=/static/css/dt/jquery.dataTables.min.css>
+<link rel="stylesheet" type="text/css" href=https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css>
+{% endblock %}
+<div id=info>
+<table>
+    <tr>
+        <td id=heat_id></td>
+        <td id=race_time></td>
+        <td id=race_start></td>
+        <td id=race_end></td>
+    </tr>
+</table>
+</div>
+<div id=table>
+    <table id=race>
     </table>
-  </body>
-</html>
+</div>

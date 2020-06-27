@@ -51,6 +51,8 @@ def get_heat_laps(heat_id):
     #    drop_query = "DROP TABLE current_heat;"
     create_query = f"CREATE temporary table if not exists current_heat as \
 ( select *  from laps where heat_id={heat_id});"
+#    get_karts_query = f"select  name  from  ( select DISTINCT transponder_id from laps where heat_id={heat_id})\
+#  as t left join karts on t.transponder_id=karts.transponder_id"
     select_query = """
 SELECT TRUNCATE(lap_time / 1000000,3),kart_number from (
 SELECT
@@ -71,8 +73,17 @@ LEFT JOIN
     with connections['kartsdb'].cursor() as cursor:
         cursor.execute(create_query)
         cursor.execute(select_query)
-        res = cursor.fetchall()
-    return res
+        data = cursor.fetchall()
+    laps = {}
+    for entry in data:
+        if entry[1] not in laps:
+            laps[entry[1]] = []
+        elif entry[0] > 0:
+            laps[entry[1]].append(entry[0])
+    data = dict(sorted(laps.items(), key=lambda kv: kv[1]))
+    laps = list(zip(*list(data.values())))
+    header = list(data.keys())
+    return header, laps
 
 
 def get_race_data(heat_id):

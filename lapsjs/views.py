@@ -15,7 +15,7 @@ def laps_json(request, heat_id=None):
     heat_finished, rtc_time_start, rtc_time_end = get_heat(heat_id)
     heat_duration_seconds = (rtc_time_end - rtc_time_start) / 1000000
     heat_duration = str(timedelta(seconds=heat_duration_seconds))
-    data = get_heat_laps(heat_id)
+    header, data = get_heat_laps(heat_id)
     try:
         heat_start = dt.fromtimestamp(int(rtc_time_start) / 1000000).strftime('%d.%m.%Y  %H:%M')
     except TypeError:
@@ -26,6 +26,7 @@ def laps_json(request, heat_id=None):
         heat_end = ''
     context = {
             'data': data,
+            'columns.data': header,
             'heat_id': heat_id,
             'heat_duration': heat_duration,
             'heat_start': heat_start,
