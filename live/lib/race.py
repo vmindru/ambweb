@@ -82,6 +82,7 @@ LEFT JOIN
             laps[entry[1]].append(entry[0])
     data = dict(sorted(laps.items(), key=lambda kv: kv[1]))
     laps = list(zip(*list(data.values())))
+#    header = [{"title": str(item)} for item in list(data.keys())]
     header = list(data.keys())
     return header, laps
 
@@ -132,7 +133,6 @@ FROM
 LEFT JOIN karts ON t5.transponder_id = karts.transponder_id
 ORDER BY t5.laps_count DESC, t5.time_raced""".format(heat_id)
 
-    get_best_lap(heat_id)
     with connections['kartsdb'].cursor() as cursor:
         cursor.execute(select_query)
         res = cursor.fetchall()

@@ -26,7 +26,7 @@ def laps_json(request, heat_id=None):
         heat_end = ''
     context = {
             'data': data,
-            'columns.data': header,
+            'table_header': header,
             'heat_id': heat_id,
             'heat_duration': heat_duration,
             'heat_start': heat_start,
