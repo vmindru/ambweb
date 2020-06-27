@@ -47,6 +47,34 @@ class Heat():
         return max([len(laps) for laps in self.dict.values()])
 
 
+def get_heat_laps(heat_id):
+    #    drop_query = "DROP TABLE current_heat;"
+    create_query = f"CREATE temporary table if not exists current_heat as \
+( select *  from laps where heat_id={heat_id});"
+    select_query = """
+SELECT TRUNCATE(lap_time / 1000000,3),kart_number from (
+SELECT
+  heatA.pass_id, heatA.transponder_id,
+  COALESCE(heatA.rtc_time - HeatB.rtc_time, 0) AS lap_time
+FROM
+  current_heat    AS heatA
+LEFT JOIN
+  current_heat    AS HeatB
+    ON  HeatB.transponder_id   = heatA.transponder_id
+    AND HeatB.pass_id = (SELECT MAX(pass_id)
+                          FROM current_heat
+                         WHERE transponder_id = heatA.transponder_id
+                           AND pass_id < heatA.pass_id) ) as heat left join karts
+                                   on heat.transponder_id = karts.transponder_id
+                           order by kart_number,pass_id ;
+"""
+    with connections['kartsdb'].cursor() as cursor:
+        cursor.execute(create_query)
+        cursor.execute(select_query)
+        res = cursor.fetchall()
+    return res
+
+
 def get_race_data(heat_id):
     select_query = """
 SELECT ifnull(karts.kart_number, t5.transponder_id),
@@ -135,5 +163,5 @@ def get_heat(heat_id):
     heat_finished = Heats(heat_id=heat_id).heat_finished
     rtc_time_start = Heats.objects.get(heat_id=heat_id).rtc_time_start
     rtc_time_end = Heats.objects.get(heat_id=heat_id).rtc_time_end
-    print(rtc_time_start, rtc_time_end)
+    # print(rtc_time_start, rtc_time_end)
     return heat_finished, rtc_time_start, rtc_time_end
