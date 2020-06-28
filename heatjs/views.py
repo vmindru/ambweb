@@ -10,6 +10,53 @@ from live.lib.race import get_last_heat
 from live.lib.race import get_heat
 
 
+def live_json(request, heat_id=None):
+    def get_index(val):
+        return data_header.index(val)
+    data, best_lap, heat_id, heat_finished, rtc_time_start, rtc_time_end = get_heat_data(request, heat_id=heat_id)
+    heat_duration_seconds = (rtc_time_end - rtc_time_start) / 1000000
+    heat_duration = str(timedelta(seconds=heat_duration_seconds))
+    try:
+        heat_start = dt.fromtimestamp(int(rtc_time_start) / 1000000).strftime('%d.%m.%Y  %H:%M')
+    except TypeError:
+        heat_start = ''
+    try:
+        heat_end = dt.fromtimestamp(int(rtc_time_end) / 1000000).strftime('%d.%m.%Y  %H:%M')
+    except TypeError:
+        heat_end = ''
+
+    """ we need to replace transponder from last colum from SQL query dataset
+    with values from best_lap before sneding to render"""
+    data = list(data)
+    data_header = ['Position', 'Kart', 'Laps', 'Lap Time', 'Raced Time', 'Diff', 'Gap', 'Best Lap Time', 'Best Lap']
+    for index, value in enumerate(data):
+        position = index + 1  # set Kart Position
+        value = list(value)
+        best_lap_time = list(best_lap[value[get_index('Best Lap Time')]])
+        value.insert(0, position)
+        """ calculate Diff to next Kart """
+        laps_count = value[get_index('Laps')]
+        leader_best_lap_time = data[0][get_index('Best Lap Time')]
+        raced_time = value[get_index('Raced Time')]
+        raced_seconds = (dt.combine(dt.min, raced_time))
+        if index == 0:
+            value[get_index('Diff')] = 0
+        else:
+            value[get_index('Diff')] = leader_best_lap_time - best_lap_time
+        value[get_index('Average')] = raced_seconds / laps_count
+        data[index] = value + best_lap_time
+    context = {
+            'data': data,
+            'heat_id': heat_id,
+            'heat_duration': heat_duration,
+            'heat_start': heat_start,
+            'heat_end': heat_end,
+            }
+    d = context
+    data = json.dumps(d, indent=4, cls=DjangoJSONEncoder)
+    return HttpResponse(data)
+
+
 def heat_json(request, heat_id=None):
     def get_index(val):
         return data_header.index(val)
@@ -34,7 +81,6 @@ def heat_json(request, heat_id=None):
         value = list(value)
         best_lap_time_data = list(best_lap[value[5]])
         value.insert(0, position)
-        print(value)
         """ calculate Diff to next Kart """
         if index == 0:
             prev_value = value

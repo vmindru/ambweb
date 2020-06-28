@@ -25,8 +25,8 @@ var race =  $('#race').DataTable( {
           {"title": "Laps", "orderable": false},
           {"title": "Lap Time", "orderable": false},
           {"title": "Raced Time", "orderable": false},
+          {"title": "Average", "orderable": false},
           {"title": "Diff", "orderable": false},
-          {"title": "Gap", "orderable": false},
           {"title": "Best Lap Time", "orderable": true},
           {"title": "Best Lap", "orderable": false},],
     } );

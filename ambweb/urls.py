@@ -22,5 +22,6 @@ urlpatterns = [
     path('race/', include('race.urls')),
     path('heatjs/', include('heatjs.urls')),
     path('lapsjs/', include('lapsjs.urls')),
+    path('livejs/', include('livejs.urls')),
     path('depo/', admin.site.urls, name='admin'),
 ]
