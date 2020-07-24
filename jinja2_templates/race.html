@@ -4,20 +4,29 @@
 <script type="text/javascript" src="/static/js/dt/datatables.min.js"></script>
 <script type="text/javascript" src="/static/js/dt/dataTables.colReorder.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="/static/js/lib/race.js"></script>
+<script type="text/javascript" src="/static/js/lib/{{ race_lib }} "></script>
+<script type="text/javascript" src="/static/js/lib/{{ timer_lib }} "></script>
 <link rel="stylesheet" type="text/css" href=/static/css/race_table.css>
 <link rel="stylesheet" type="text/css" href=/static/css/dt/datatables.min.css>
 <link rel="stylesheet" type="text/css" href=/static/css/dt/colReorder.dataTables.min.css>
 <link rel="stylesheet" type="text/css" href=/static/css/dt/jquery.dataTables.min.css>
-<link rel="stylesheet" type="text/css" href=https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css>
+<link rel="stylesheet" type="text/css" href=/static/css/dt/select.dataTables.min.css>
 {% endblock %}
+<div id=header>
+  <div id=logo>
+    <img src=http://></img>
+  </div>
+</div>
 <div id=info>
 <table>
     <tr>
         <td id=heat_id></td>
+        <td id=heat_status></td>
+        <td id=heat_timer></td>
         <td id=race_time></td>
         <td id=race_start></td>
         <td id=race_end></td>
+       <td id=race_timer></td>
     </tr>
 </table>
 </div>

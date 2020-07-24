@@ -22,6 +22,7 @@ var race =  $('#race').DataTable( {
         "columns": [
           {"title": "Position", "orderable": false},
           {"title": "Number", "orderable": false},
+          {"title": "Name", "orderable": false},
           {"title": "Laps", "orderable": false},
           {"title": "Lap Time", "orderable": false},
           {"title": "Raced Time", "orderable": false},

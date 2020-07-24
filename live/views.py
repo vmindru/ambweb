@@ -9,5 +9,7 @@ def heat(request, heat_id=None, kart_id=None):
     context = {
             'heat_id': heat_id,
             'ajax_url': ajax_url,
+            'race_lib': 'live.js',
+            'timer_lib': 'timer.js',
             }
-    return render(request, 'live.html', context)
+    return render(request, 'race.html', context)

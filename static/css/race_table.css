@@ -1,20 +1,32 @@
 table {
     width: 100%;
-    text-align: center
+    text-align: center;
 }
 
 thead {
-   background-color: #e6a8a8
+   background-color: #1d6ee8;
+   color: yellow;
+   font-weight: 900
 }
 
 .even {
-   background-color: #f7ffe6 !important
+   background-color: #9cb9ef !important;
+   color: black;
+   font-weight: normal
+
 }
 
 .odd {
-   background-color: #f7ffe6 !important
+   background-color: #acc9ff !important;
+   color: black;
+
 }
 
 .selected {
-   background-color: #ccc !important
+   background-color: #1f2938 !important ;
+   color: white;
+   font-weight: bold
+
 }
+
+

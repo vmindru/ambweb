@@ -21,11 +21,11 @@ yum install ${PCKG}
 
 
 # demo
-![alt tag](https://raw.githubusercontent.com/vmindru/ambweb/master/templates/demo.gif)
+![alt tag](https://raw.githubusercontent.com/vmindru/ambweb/master/templates/demo.png)
 
 
 # related
 
 https://github.com/vmindru/ambp3client
 
-https://github.com/br0ziliy/amb-docker
+https://github.com/vmindru/amb-docker

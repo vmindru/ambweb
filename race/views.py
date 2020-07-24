@@ -11,5 +11,7 @@ def heat_refresh(request, heat_id=None):
             'data_header': data_header,
             'heat_id': heat_id,
             'ajax_url': ajax_url,
+            'race_lib': 'race.js',
+            'timer_lib': 'timer.js',
             }
     return render(request, 'race.html', context)

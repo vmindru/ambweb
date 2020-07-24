@@ -29,11 +29,11 @@ def live_json(request, heat_id=None):
     """ we need to replace transponder from last colum from SQL query dataset
     with values from best_lap before sneding to render"""
     data = list(data)
-    data_header = ['Position', 'Kart', 'Laps', 'Lap Time', 'Raced Time', 'Average', 'Diff', 'Best Lap Time', 'Best Lap']
+    data_header = ['Position', 'Kart', 'Name', 'Laps', 'Lap Time', 'Raced Time', 'Average', 'Diff', 'Best Lap Time', 'Best Lap']
     for index, value in enumerate(data):
         position = index + 1  # set Kart Position
         value = list(value)
-        transponder_id = value[5]
+        transponder_id = value[6]
         best_heat_lap_time = min([item[0] for item in best_lap.values()])
         best_lap_time = list(best_lap[transponder_id])
         value.insert(0, position)

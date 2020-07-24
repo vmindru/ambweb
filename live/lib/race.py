@@ -90,6 +90,7 @@ LEFT JOIN
 def get_race_data(heat_id):
     select_query = """
 SELECT ifnull(karts.kart_number, t5.transponder_id),
+       ifnull(karts.name, t5.transponder_id),
        t5.laps_count,
        t5.lap_time,
        sec_to_time((t5.time_raced / 1000000)) AS time_raced,

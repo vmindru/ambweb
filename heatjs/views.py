@@ -17,18 +17,18 @@ def live_json(request, heat_id=None):
     heat_duration_seconds = (rtc_time_end - rtc_time_start) / 1000000
     heat_duration = str(timedelta(seconds=heat_duration_seconds))
     try:
-        heat_start = dt.fromtimestamp(int(rtc_time_start) / 1000000).strftime('%d.%m.%Y  %H:%M')
+        heat_start = dt.utcfromtimestamp(int(rtc_time_start) / 1000000, ).strftime('%d.%m.%Y  %H:%M')
     except TypeError:
         heat_start = ''
     try:
-        heat_end = dt.fromtimestamp(int(rtc_time_end) / 1000000).strftime('%d.%m.%Y  %H:%M')
+        heat_end = dt.utcfromtimestamp(int(rtc_time_end) / 1000000).strftime('%d.%m.%Y  %H:%M')
     except TypeError:
         heat_end = ''
 
     """ we need to replace transponder from last colum from SQL query dataset
     with values from best_lap before sneding to render"""
     data = list(data)
-    data_header = ['Position', 'Kart', 'Laps', 'Lap Time', 'Raced Time', 'Diff', 'Gap', 'Best Lap Time', 'Best Lap']
+    data_header = ['Position', 'Kart', 'Name', 'Laps', 'Lap Time', 'Raced Time', 'Diff', 'Gap', 'Best Lap Time', 'Best Lap']
     for index, value in enumerate(data):
         position = index + 1  # set Kart Position
         value = list(value)
@@ -48,6 +48,7 @@ def live_json(request, heat_id=None):
     context = {
             'data': data,
             'heat_id': heat_id,
+            'heat_finished': heat_finished,
             'heat_duration': heat_duration,
             'heat_start': heat_start,
             'heat_end': heat_end,
@@ -75,11 +76,11 @@ def heat_json(request, heat_id=None):
     """ we need to replace transponder from last colum from SQL query dataset
     with values from best_lap before sneding to render"""
     data = list(data)
-    data_header = ['Position', 'Kart', 'Laps', 'Lap Time', 'Raced Time', 'Diff', 'Gap', 'Best Lap Time', 'Best Lap']
+    data_header = ['Position', 'Kart', 'Name', 'Laps', 'Lap Time', 'Raced Time', 'Diff', 'Gap', 'Best Lap Time', 'Best Lap']
     for index, value in enumerate(data):
         position = index + 1  # set Kart Position
         value = list(value)
-        best_lap_time_data = list(best_lap[value[5]])
+        best_lap_time_data = list(best_lap[value[6]])
         value.insert(0, position)
         """ calculate Diff to next Kart """
         if index == 0:
@@ -108,7 +109,7 @@ def heat_json(request, heat_id=None):
             elif lap_count == prev_position_lap_count:
                 gap = 0
                 for rev_index in range(index-1, -1, -1):
-                    prev_diff = data[rev_index][5]
+                    prev_diff = data[rev_index][6]
                     if not isinstance(prev_diff, str):
                         gap = round((prev_diff + gap), 3)
                         print(diff)
@@ -119,14 +120,14 @@ def heat_json(request, heat_id=None):
             else:
                 gap = gap_laps
 
-            value[5] = diff
-            value[6] = gap
+            value[6] = diff
+            value[7] = gap
             prev_value = value
 
         else:
             "assign diff and gap, and assign prev_value for next run"
-            value[5] = 0
             value[6] = 0
+            value[7] = 0
             prev_value = value
 
         data[index] = value + best_lap_time_data
