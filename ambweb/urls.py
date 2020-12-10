@@ -23,5 +23,6 @@ urlpatterns = [
     path('heatjs/', include('heatjs.urls')),
     path('lapsjs/', include('lapsjs.urls')),
     path('livejs/', include('livejs.urls')),
+    path('control', include('control.urls')),
     path('depo/', admin.site.urls, name='admin'),
 ]
